@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yöwner's Live#03 アンケート結果</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .container {
+            max-width: 1280px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8">
+
+<div class="container mx-auto">
+    <header class="text-center my-12">
+        <h1 class="text-4xl sm:text-5xl font-bold text-gray-800">
+            <span class="block mb-2">yöwner's Live#03</span>
+            アンケート結果
+        </h1>
+        <p class="mt-4 text-lg sm:text-xl text-gray-600">お寄せいただいた貴重なご意見をまとめました</p>
+    </header>
+
+    <!-- 定量的データ（グラフ）セクション -->
+    <section class="mb-12">
+        <h2 class="text-3xl font-bold text-gray-700 mb-6 border-b-2 border-indigo-400 pb-2">満足度グラフ</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">総合満足度</h3>
+                <div class="chart-container">
+                    <canvas id="satisfactionChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">会場の雰囲気</h3>
+                <div class="chart-container">
+                    <canvas id="venueChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">開催場所への行きやすさ</h3>
+                <div class="chart-container">
+                    <canvas id="accessibilityChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">発表会全体の流れ</h3>
+                <div class="chart-container">
+                    <canvas id="flowChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">お目当ての演者様との交流</h3>
+                <div class="chart-container">
+                    <canvas id="interactionChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold mb-4 text-gray-800">お目当て以外の演者様の満足度</h3>
+                <div class="chart-container">
+                    <canvas id="otherPerformersChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 自由記述コメント セクション -->
+    <section>
+        <h2 class="text-3xl font-bold text-gray-700 mb-6 border-b-2 border-indigo-400 pb-2">ご意見・ご感想</h2>
+        <div id="comments-container" class="space-y-8">
+            <!-- コメントがここに動的に挿入されます -->
+        </div>
+    </section>
+
+    <footer class="text-center text-gray-500 text-sm mt-12 py-4">
+        <p>© 2025 yöwn Record All Rights Reserved.</p>
+    </footer>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const surveyData = [
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 5,
+                flow: 5,
+                interaction: 5,
+                otherPerformers: 5,
+                interestInMusic: 5,
+                feedback: "レーベルの素晴らしさがすごく伝わるライブだったと思いますPAさん。音も照明もすごく歌いやすく、やりやすく、パフォーマンスに集中（没頭）できたと思いました👏",
+                impressiveScene: "とくにありません",
+                improvement: "",
+                messageToPerformers: "さよさん→MCも歌も、さすがの余裕、安定感、包容力と優しさを感じる素敵なステージでした✨️　あじさいさん→どんな曲を歌っても語りのように聴こえるところがさすが舞台人だと感じました、オリジナルも素晴らしかったです✨️　いぶちゃん→いぶちゃんの成長をとても感じて感激しました、ギターも歌も、場の盛り上げ方も。日々の努力が詰まってると思いました✨️　奏ちゃん→以前よりもエモーショナルさを感じるピアノに聴こえました、どのボーカリストとも完璧に一体になってて本当に素晴らしかったです、MCもすごく上手✨️　りこちゃん→さすがの歌声の美しさ＆舞台度胸だと思いました、私も自分をもっともっと磨き上げたいって刺激をもらいました✨️　昌都→500点満点✨️小さいながら昌都なりに努力してたのを見てきたので、最後のやりきった表情を見て嬉しかったです✨️　和人→持ち前の愛嬌と度胸で人を惹きつける、ギターも歌も才能だと思いました、もっともっと磨いて人生を彩ってほしいです✨️　りるちゃん→独特の空気の振動を感じる、唯一無二の歌声だと思いました、最高でした✨️　ノブユキさん→至高の領域でした、素晴らしいステージを間近で見せていただきありがとうございました✨️"
+            },
+            {
+                overallSatisfaction: 4,
+                venueAtmosphere: 3,
+                accessibility: 4,
+                flow: 2,
+                interaction: 3,
+                otherPerformers: 4,
+                interestInMusic: 4,
+                feedback: "みんな素晴らしかったです！",
+                impressiveScene: "８歳の子が出演(弾き語り)していたことに驚きました。",
+                improvement: "LIVE開始〜終了までの時間が長過ぎると感じた",
+                messageToPerformers: "みんな素晴らしかったです"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 5,
+                flow: 4,
+                interaction: 5,
+                otherPerformers: 5,
+                interestInMusic: 5,
+                feedback: "知ってる曲が多かってめっちゃおもろかった",
+                impressiveScene: "ノブ先生のミスチルが声が似てた",
+                improvement: "なし",
+                messageToPerformers: "さいこーでーす！"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 5,
+                flow: 3,
+                interaction: 5,
+                otherPerformers: 5,
+                interestInMusic: 5,
+                feedback: "アットホームな雰囲気でよかったです。",
+                impressiveScene: "素晴らしかったです。",
+                improvement: "出演者のスピーチ開始時間の案内が、会場オープンか開演時間か迷いました。",
+                messageToPerformers: "素晴らしかったです。"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 5,
+                flow: 4,
+                interaction: 5,
+                otherPerformers: 5,
+                interestInMusic: 5,
+                feedback: "出演者皆さんが輝いていた素晴らしいライブだと思いました。",
+                impressiveScene: "家族が出ていたシーン",
+                improvement: "特にない",
+                messageToPerformers: "お疲れ様でした！皆さんとてもカッコよかったです🤩"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 4,
+                flow: 3,
+                interaction: 4,
+                otherPerformers: 4,
+                interestInMusic: 3,
+                feedback: "小さい会場で、それが見やすく一体感があり良かったです。進行とスタッフの一生懸命さが伝わりました。勿論、歌われた方々もです。感動しました。",
+                impressiveScene: "お子さんのウクレレとギターでの歌。とりのリルさん最高でした。",
+                improvement: "ご苦労さまでした。",
+                messageToPerformers: "最高でした。"
+            },
+            {
+                overallSatisfaction: 4,
+                venueAtmosphere: 4,
+                accessibility: 2,
+                flow: 4,
+                interaction: 3,
+                otherPerformers: 3,
+                interestInMusic: 3,
+                feedback: "皆様の音楽に対する想いとパワーが素晴らしく、とても元気をいただきました！ありがとうございました！！",
+                impressiveScene: "演奏者の語り、コラボしている人同士が楽しそうにアイコンタクトしながら演奏していた、それぞれのシーン",
+                improvement: "開場を待つまでが、外が猛暑でしたので、この時期の開催はオープン時間に余裕を持っていただけると助かります。",
+                messageToPerformers: "お疲れ様でした！引き続き音楽を楽しんでください！！"
+            },
+            {
+                overallSatisfaction: 4,
+                venueAtmosphere: 4,
+                accessibility: 3,
+                flow: 4,
+                interaction: 3,
+                otherPerformers: 3,
+                interestInMusic: 3,
+                feedback: "温かなやさしい時間だったなと思います。一回の本番に、全力で挑むからこそのエネルギーを頂きました。ありがとうございます！",
+                impressiveScene: "鎌倉あじさいさんの、オリジナルソング。",
+                improvement: "上手い下手ではないのですが、やっぱり無意識に比較してしまいました。Mrs.GREEN APPLE、というグループは名前しか知りませんし、人気があるらしいことは知っていますが、わたしは刺さらないのか、同じグループの曲が多く感じて集中を欠きました。",
+                messageToPerformers: "この一回に向けて積み重ねた時間と想い。そして緊張と懸けるエネルギーを頂きました。ありがとうございます！"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 4,
+                flow: 4,
+                interaction: 4,
+                otherPerformers: 4,
+                interestInMusic: 4,
+                feedback: "一人一人のアーティストさんの歌い方、声や表情から本人にしかないストーリーがあるんだろうなぁと感じながら観ていて、皆さんが個性があり素敵でした✨✨✨楽しんでる事も緊張もリアルに伝わってきます。そういう全体の雰囲気を私も楽しませて頂きました♪ ありがとうございます☺️",
+                impressiveScene: "のぶゆきさんの魂から歌う姿です🥹自分にチャレンジしてる姿が素敵でした‼️",
+                improvement: "",
+                messageToPerformers: "のぶゆきさんの魂から歌う姿です🥹自分にチャレンジしてる姿が素敵でした‼️"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 4,
+                flow: 4,
+                interaction: 4,
+                otherPerformers: 4,
+                interestInMusic: 4,
+                feedback: "会場の雰囲気も良く、全体の流れもスムーズで、カバー曲が多く知っている曲もたくさんあったのでとても聞きやすかったし楽しいひと時を過ごすことができました🥹✨",
+                impressiveScene: "ノブユキさんのダーリンに魂を揺さぶられるほどの大感動で涙が止まりませんでした😭",
+                improvement: "出演者様方のちょっとしたプロフィールやInstagramなどが記載されたパンフレットとかがあったら気になった方を探しやすいなぁと思いました✨",
+                messageToPerformers: "最高でした😭💓💓💓"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 3,
+                accessibility: 3,
+                flow: 3,
+                interaction: 4,
+                otherPerformers: 5,
+                interestInMusic: 3,
+                feedback: "そこそこ流れは良かったです!",
+                impressiveScene: "最後の唄が良かったです!",
+                improvement: "大丈夫です!",
+                messageToPerformers: "自分の娘頑張ってますねー!"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 3,
+                flow: 2,
+                interaction: 3,
+                otherPerformers: 3,
+                interestInMusic: 2,
+                feedback: "小さいライブ会場だったので一体感があり楽しめました。先生の進行も良かったです。。",
+                impressiveScene: "進行の先生の言葉等や子供2人のギター演奏が上手でした。ラストのリルさんの歌声が上手く心に響いて、とても感動しました。",
+                improvement: "一生懸命が伝わりました。",
+                messageToPerformers: "ありがとうございます"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 4,
+                flow: 3,
+                interaction: 4,
+                otherPerformers: 4,
+                interestInMusic: 4,
+                feedback: "生の音を聴けた感動、時間を割いて来てくださった方々の気持ち、たくさん時間をかけて下さった主催の方の労力を考えると身が引き締まる思いでこれからも沢山学んでいきたいと思いました！音楽と人間磨き！",
+                impressiveScene: "りるさんのステージ全部迫力があって、感動しました",
+                improvement: "次からペダルにボンドつけとく",
+                messageToPerformers: "ありがとう"
+            },
+            {
+                overallSatisfaction: 5,
+                venueAtmosphere: 5,
+                accessibility: 4,
+                flow: 4,
+                interaction: 4,
+                otherPerformers: 4,
+                interestInMusic: 4,
+                feedback: "回を重ねる毎にレベルがどんどん上がっていくのを感じます！",
+                impressiveScene: "ノブさんのダーリンのパワーに圧倒されました。会場の隅々まで響き渡る歌声に感動しました！",
+                improvement: "ステージ側から見た時に、スマホをかかえている人が一人もいなかったので、集中して見てもらっている感じがして、それが嬉しかったです。",
+                messageToPerformers: "★Sayoさん：咄嗟の機転、めっちゃ素敵でした！★イブちゃん：キラキラ輝いてたよ！ ★あじさいさん：オリジナル曲、ほんとに素敵！また聴きたい★りこママ：初ステージとは思えないくらい堂々としてた！ ★タロウちゃん：何度も言うけどやっぱり天才！ ★昌都くん：その姿を見せてくれてありがとう★和人くん：あの難しい「Rainy」を弾きこなしててかっこよかった！★lilleちゃん：後ろから見てたよ〜！一緒に出来て嬉しかった ★ノブさん：準備もサポートもいっぱいありがとうございました！コラボ出来たのが嬉しくてたまりません！"
+            },
+            {
+                overallSatisfaction: 4,
+                venueAtmosphere: 5,
+                accessibility: 3,
+                flow: 2,
+                interaction: 3,
+                otherPerformers: 3,
+                interestInMusic: 3,
+                feedback: "演者の方達と距離が近く落ち着いた雰囲気で一体感があり、とても良かったです。それぞれの歌う歌に込められた思いやエピソード…ココロを揺さぶられ感動しました。",
+                impressiveScene: "『歌』や『曲』の素晴らしさをあらためて気づかされました。色んな奇跡やミラクルの連続で、出逢えたこのご縁に感謝してます！！",
+                improvement: "パンフレットなど思い出に残る品が何かあれば嬉しい…。当日の参加アーティストの集合写真とかも良いかも…笑いありハプニングあり感動があり…本当に参加できて良かったです！",
+                messageToPerformers: "『歌』や『曲』の素晴らしさをあらためて気づかされました。色んな奇跡やミラクルの連続で、出逢えたこのご縁に感謝してます！！"
+            }
+        ];
+
+        const chartColors = [
+            'rgba(79, 70, 229, 0.8)', // 5
+            'rgba(99, 102, 241, 0.8)', // 4
+            'rgba(129, 140, 248, 0.8)', // 3
+            'rgba(165, 180, 252, 0.8)', // 2
+            'rgba(199, 210, 254, 0.8)'  // 1
+        ];
+
+        function createChart(elementId, dataKey, title) {
+            const canvasElement = document.getElementById(elementId);
+            if (!canvasElement) {
+                console.error(`Canvas element with id "${elementId}" not found.`);
+                return;
+            }
+
+            const counts = {};
+            for (let i = 1; i <= 5; i++) {
+                counts[i] = 0;
+            }
+            surveyData.forEach(d => {
+                if (d[dataKey] >= 1 && d[dataKey] <= 5) {
+                    counts[d[dataKey]]++;
+                }
+            });
+
+            const data = {
+                labels: ['5（大変満足）', '4（満足）', '3（普通）', '2（やや不満）', '1（不満）'],
+                datasets: [{
+                    label: title,
+                    data: [counts[5], counts[4], counts[3], counts[2], counts[1]],
+                    backgroundColor: chartColors,
+                    borderColor: chartColors.map(c => c.replace('0.8', '1')),
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0,
+                                color: '#4b5563'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#4b5563'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            };
+            new Chart(canvasElement, config);
+        }
+
+        // グラフを生成
+        createChart('satisfactionChart', 'overallSatisfaction', '総合満足度');
+        createChart('venueChart', 'venueAtmosphere', '会場の雰囲気');
+        createChart('accessibilityChart', 'accessibility', '開催場所への行きやすさ');
+        createChart('flowChart', 'flow', '発表会全体の流れ');
+        createChart('interactionChart', 'interaction', 'お目当ての演者様との交流');
+        createChart('otherPerformersChart', 'otherPerformers', 'お目当て以外の演者様の満足度');
+
+        // 自由記述コメントの表示
+        const commentsContainer = document.getElementById('comments-container');
+        surveyData.forEach((data, index) => {
+            const commentCard = document.createElement('div');
+            commentCard.className = "card p-6 flex flex-col items-start space-y-4";
+
+            // アイコン
+            const icon = document.createElement('div');
+            icon.className = "bg-indigo-500 rounded-full w-12 h-12 flex items-center justify-center text-white font-bold text-lg";
+            icon.innerText = index + 1;
+            commentCard.appendChild(icon);
+
+            // フィードバック
+            const feedbackSection = document.createElement('div');
+            feedbackSection.innerHTML = `<h4 class="text-lg font-bold text-gray-800">全体のご感想:</h4><p class="text-gray-600 mt-1">${data.feedback}</p>`;
+            commentCard.appendChild(feedbackSection);
+            
+            // 印象に残ったシーン
+            const impressiveSection = document.createElement('div');
+            impressiveSection.innerHTML = `<h4 class="text-lg font-bold text-gray-800">特に印象に残ったシーン:</h4><p class="text-gray-600 mt-1">${data.impressiveScene || '記載なし'}</p>`;
+            commentCard.appendChild(impressiveSection);
+
+            // 改善点
+            const improvementSection = document.createElement('div');
+            improvementSection.innerHTML = `<h4 class="text-lg font-bold text-gray-800">気付いたことや改善点:</h4><p class="text-gray-600 mt-1">${data.improvement || '記載なし'}</p>`;
+            commentCard.appendChild(improvementSection);
+
+            // 演者様へ一言
+            const messageSection = document.createElement('div');
+            messageSection.innerHTML = `<h4 class="text-lg font-bold text-gray-800">出演された演者様へ一言:</h4><p class="text-gray-600 mt-1">${data.messageToPerformers || '記載なし'}</p>`;
+            commentCard.appendChild(messageSection);
+
+            commentsContainer.appendChild(commentCard);
+        });
+    });
+</script>
+
+</body>
+</html>
